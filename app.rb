@@ -18,10 +18,10 @@ class BookSaver < Sinatra::Base
         @title = loveread.title(params[:p])
         @html_page = loveread.html_page(params[:p])
       rescue
-        @html_page = 'Something went wrong'
+        @html_page = 'Что-то пошло не так'
       end
     else
-      @html_page = 'Please fill book name before search'
+      @html_page = 'Перед поиском введите название книги'
     end
     erb :index, { :locals => params, :layout => :layout }
   end

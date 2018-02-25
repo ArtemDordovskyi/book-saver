@@ -58,10 +58,10 @@ class Loveread
         end
         builder.to_html
       else
-        '404 Not Found'
+        'Книга не найдена'
       end
     rescue
-      '404 Not Found'
+      'Книга не найдена'
     end
   end
 
