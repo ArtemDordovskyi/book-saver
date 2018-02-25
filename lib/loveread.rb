@@ -40,16 +40,26 @@ class Loveread
           input_id['value'] = @book_id
           form.children.first.add_next_sibling(input_id)
         end
-        doc.css('div.MsoNormal form').remove_attr('method')
 
-        doc.css('div.MsoNormal').first.inner_html.encode('UTF-8')
-        prettify(doc.css('div.MsoNormal').first.inner_html.encode('UTF-8'))
+        doc.search('div.navigation a').each do |link|
+          link.attributes['href'].value =
+            link.attributes['href'].value.gsub('read_book.php?id', "/?book_name=#{@book_name.gsub(' ','+')}&book_id")
+          link.attributes['title'].value = link.attributes['title'].value.gsub(' | читать книгу бесплатно', '')
+        end
+
+        doc.css('div.MsoNormal form').remove_attr('method')
+        prettify(
+          doc.css('div.MsoNormal').first.inner_html.encode('UTF-8') +
+            '<div class="paginate">' +
+            doc.css('div.navigation').first.inner_html.encode('UTF-8') +
+            '</div>'
+        )
       elsif @book_id.is_a?(Array)
         builder = Nokogiri::HTML::Builder.new do |doc|
           doc.div {
             @book_id.each do |link|
               doc.div {
-                doc.a(href: "/?book_name=#{@book_name}&book_id=#{link[:id]}", style: 'text-decoration: none;') {
+                doc.a(href: "/?book_name=#{@book_name}&book_id=#{link[:id]}") {
                   doc.text link[:text]
                 }
               }
