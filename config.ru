@@ -3,4 +3,6 @@ require 'bundler/setup'
 require 'sinatra'
 require './app'
 
-Sinatra::Application.run!
+require File.expand_path('../app.rb', __FILE__)
+use Rack::ShowExceptions
+run BookSaver.new

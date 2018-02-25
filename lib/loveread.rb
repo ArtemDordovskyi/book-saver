@@ -18,12 +18,22 @@ class Loveread
   end
 
   def html_page(page = 1)
-    doc = Nokogiri::HTML(open(read_link(page)))
-    doc.search('div.MsoNormal form').each do |form|
-      form.attributes['action'].value = "/search?id=#{@book_id}&p=#{page}"
-    end
+    begin
+      doc = Nokogiri::HTML(open(read_link(page)))
+      doc.search('div.MsoNormal form').each do |form|
+        form.attributes['action'].value = "/?book_name=#{@book_name.gsub(' ','+')}&p=#{page}"
+        input = Nokogiri::XML::Node.new('input', doc)
+        input['type'] = 'hidden'
+        input['name'] = 'book_name'
+        input['value'] = @book_name.gsub(' ','+')
+        form.children.first.add_next_sibling(input)
+      end
+      doc.css('div.MsoNormal form').remove_attr('method')
 
-    puts doc.css('div.MsoNormal').first.inner_html
+      doc.css('div.MsoNormal').first.inner_html.encode('UTF-8')
+    rescue
+      '404 Not Found'
+    end
   end
 
   protected
@@ -46,6 +56,3 @@ class Loveread
     link.attributes['href'].value.gsub(/\D+/, '') if link
   end
 end
-
-book = Loveread.new('Огненный факультет')
-book.html_page(12)
