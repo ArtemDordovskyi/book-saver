@@ -14,7 +14,9 @@ class BookSaver < Sinatra::Base
     if params[:book_name] && params[:book_name].length > 0
       @book_name = params[:book_name]
       begin
-        @html_page = Loveread.new(@book_name).html_page(params[:p])
+        loveread = Loveread.new(@book_name, params[:book_id])
+        @title = loveread.title
+        @html_page = loveread.html_page(params[:p])
       rescue
         @html_page = 'Something went wrong'
       end
