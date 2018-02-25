@@ -17,8 +17,9 @@ class Loveread
     "http://loveread.ec/read_book.php?id=#{@book_id}&p=#{page}"
   end
 
-  def title
-    @book_name.gsub('+', ' ')
+  def title(page)
+    @book_name.gsub('+', ' ') +
+      (page ? ". Страница #{page}" : '')
   end
 
   def html_page(page = 1)
