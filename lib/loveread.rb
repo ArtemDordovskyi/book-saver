@@ -19,7 +19,7 @@ class Loveread
 
   def title(page)
     @book_name.gsub('+', ' ') +
-      (page ? ". Страница #{page}" : '')
+      (@book_id.is_a?(Integer) ? ". Страница #{page || 1}" : '')
   end
 
   def html_page(page = 1)
@@ -59,7 +59,7 @@ class Loveread
           doc.div {
             @book_id.each do |link|
               doc.div {
-                doc.a(href: "/?book_name=#{@book_name}&book_id=#{link[:id]}") {
+                doc.a(href: "/?book_name=#{link[:book_name]}&book_id=#{link[:id]}&p=1") {
                   doc.text link[:text]
                 }
               }
@@ -107,7 +107,11 @@ class Loveread
     begin
       if links.count > 1
         links.map do |link|
-          { id: link.attributes['href'].value.gsub(/\D+/, '').to_i, text: "#{link.parent.children.search('a').last.text}. #{link.text.strip}" }
+          {
+            id: link.attributes['href'].value.gsub(/\D+/, '').to_i,
+            text: "#{link.parent.children.search('a').last.text}. #{link.text.gsub(/\[.+\]/,'').strip}",
+            book_name: link.text.gsub(/\[.+\]/,'').strip
+          }
         end
       else
         links.first.attributes['href'].value.gsub(/\D+/, '').to_i
