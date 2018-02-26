@@ -37,6 +37,7 @@ class Loveread
       if @book_id.is_a?(Integer)
         @doc = read_doc(page)
         update_form(page)
+        update_notes
         update_navigation
         text = @doc.css('div.MsoNormal').first.inner_html.encode('UTF-8')
         paginate = '<div class="paginate">' +
@@ -107,6 +108,13 @@ class Loveread
       form.children.first.add_next_sibling(input_id)
     end
     @doc.css('div.MsoNormal form').remove_attr('method')
+    @doc
+  end
+
+  def update_notes
+    @doc.search('a[target="_blank"]').each do |a|
+      a.attributes['href'].value = 'javascript:void(0);'
+    end
     @doc
   end
 
