@@ -13,8 +13,11 @@
     <div style="display: none;">
       <a href="/download?format=pdf&book_name=<%= @book_name %>&author=<%= @author %>&book_id=<%= @book_id %>">pdf</a>
     </div>
-    <div>
+    <div style="display: none;">
       <a href="/download?format=txt&book_name=<%= @book_name %>&author=<%= @author %>&book_id=<%= @book_id %>">txt</a>
+    </div>
+    <div>
+      <a href="/download?format=fb2&book_name=<%= @book_name %>&author=<%= @author %>&book_id=<%= @book_id %>">fb2</a>
     </div>
   <% end %>
   <div><%= @html_page %></div>

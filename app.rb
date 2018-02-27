@@ -12,10 +12,11 @@ end
 class BookSaver < Sinatra::Base
   get '/download' do
     loveread = Loveread.new(params[:book_name], params[:book_id], params[:author])
-    loveread.send(params[:format])
+    loveread.send("to_#{params[:format]}")
+    book_name = loveread.title(1, false)
     content_type "application/#{params[:format]}"
-    attachment "./#{loveread.title(1, false)}.#{params[:format]}"
-    send_file "./#{loveread.title(1, false)}.#{params[:format]}"
+    attachment "./#{book_name}.#{params[:format]}"
+    send_file "./#{book_name}.#{params[:format]}"
   end
 
   get '/' do

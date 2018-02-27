@@ -66,13 +66,13 @@ class Loveread
     end
   end
 
-  def pdf
+  def to_pdf
     pdf = Prawn::Document.new
     pdf.text(html_book.encode("windows-1252", invalid: :replace, undef: :replace))
     pdf.render_file(title('') + '.pdf')
   end
 
-  def txt
+  def to_txt
     filename = title(1, false) + '.txt'
     unless File.exist?(filename)
       text = html_book.gsub(/<\/?[^>]*>/, "")
@@ -84,6 +84,33 @@ class Loveread
       end
     end
     filename
+  end
+
+  def to_fb2
+    fb2 = <<-TEXT
+      <?xml version="1.0"?
+      <FictionBook xmlns:l="http://www.w3.org/1999/xlink" xmlns="http://www.gribuser.ru/xml/fictionbook/2.0">
+        <description>
+          <author>#{@author}</author>
+          <book-title>#{title(1, false)}</book-title>
+        </description>
+        <body>
+          #{prettify(html_book)}
+        </body>
+      </FictionBook>
+    TEXT
+
+    filename = title(1, false) + '.fb2'
+    unless File.exist?(filename)
+      File.open(filename, "w") do |file|
+        file.write(fb2)
+      end
+    end
+    filename
+  end
+
+  def to_mobi
+
   end
 
   protected
@@ -147,7 +174,7 @@ class Loveread
       book[page] = doc.css('div.MsoNormal').first.inner_html.encode('UTF-8')
     end
 
-    "<html><body>#{book.join()}</body></html>"
+    book.join()
   end
 
   def unicodeToWin1251_UrlEncoded(s)
@@ -198,8 +225,6 @@ class Loveread
     doc = doc.gsub('class="MsoNormal"', '')
     doc = doc.gsub('class="em"', 'style="font-style: italic;"')
     doc = doc.gsub('class="take_h1"', 'style="font-weight: 600; text-align: center; margin-top: 3em;"')
-    doc = doc.gsub(/\r\n/, '')
-    doc = doc.gsub(/\n/, '')
     doc.strip
   end
 end
