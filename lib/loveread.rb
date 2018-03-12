@@ -67,7 +67,7 @@ class Loveread
           doc.div {
             @book_id.each do |link|
               doc.div {
-                doc.a(href: "/?book_name=#{link[:text]}&book_id=#{link[:id]}&p=1") {
+                doc.a(href: "/?book_name=#{link[:book_name]}&book_id=#{link[:id]}&p=1") {
                   doc.text link[:text]
                 }
               }
@@ -269,7 +269,8 @@ class Loveread
 
           {
             id: link.attributes['href'].value.gsub(/\D+/, '').to_i,
-            text: text
+            text: text,
+            book_name: link.text.gsub(/\[.+\]/,'').strip.gsub(/^\d+./, '').strip
           }
         end
       else
