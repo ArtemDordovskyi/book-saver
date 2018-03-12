@@ -246,7 +246,14 @@ class Loveread
   def get_book_id
     links = @doc.search('a.letter_nav_s')
     author_links = @doc.search('a.letter_author')
-    return 'Слишком много совпадений. Уточните запрос.' if author_links.count > 25
+
+    puts '*'*100
+    puts links.count
+    puts author_links.count
+    puts '*'*100
+
+    return 'Слишком много совпадений. Уточните запрос.' if author_links.count > 24 || links.count > 249
+
     if author_links.count > 0
       author_links.each do |author_link|
         author_doc = Nokogiri::HTML(open("http://loveread.ec/#{author_link.attributes['href'].value}"))
