@@ -11,7 +11,7 @@ end
 
 class BookSaver < Sinatra::Base
   get '/download' do
-    loveread = Loveread.new(params[:book_name], params[:book_id], params[:author])
+    loveread = Loveread.new(params[:book_name], params[:book_id])
     loveread.send("to_#{params[:format]}")
     book_name = loveread.title(1, false)
     content_type "application/#{params[:format]}"
@@ -23,7 +23,7 @@ class BookSaver < Sinatra::Base
     if params[:book_name] && params[:book_name].length > 0
       @book_name = params[:book_name]
       begin
-        loveread = Loveread.new(@book_name, params[:book_id], params[:author])
+        loveread = Loveread.new(@book_name, params[:book_id])
         @title = loveread.title(params[:p])
         @book_id = loveread.book_id
         @author = loveread.author

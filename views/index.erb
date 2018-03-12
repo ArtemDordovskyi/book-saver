@@ -10,9 +10,6 @@
 <% if @html_page %>
   <h2><%= @title %></h2>
   <% if @book_id.is_a?(Integer) %>
-    <div style="display: none;">
-      <a href="/download?format=pdf&book_name=<%= @book_name %>&author=<%= @author %>&book_id=<%= @book_id %>">pdf</a>
-    </div>
     <div style="display: inline-block;">
       <a href="/download?format=txt&book_name=<%= @book_name %>&author=<%= @author %>&book_id=<%= @book_id %>">txt</a>
     </div>
