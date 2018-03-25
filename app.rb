@@ -28,7 +28,7 @@ class BookSaver < Sinatra::Base
         @book_id = loveread.book_id
         @author = loveread.author
         @html_page = loveread.html_page(params[:p])
-      rescue
+      rescue => e
         @html_page = 'Что-то пошло не так'
       end
     else

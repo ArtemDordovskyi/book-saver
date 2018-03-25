@@ -3,7 +3,6 @@ require 'nokogiri'
 require 'open-uri'
 require 'json'
 require 'pry'
-require 'prawn'
 require 'html_to_plain_text'
 require 'parallel'
 require 'eeepub'
@@ -85,12 +84,6 @@ class Loveread
     end
   end
 
-  # def to_pdf
-  #   pdf = Prawn::Document.new
-  #   pdf.text(html_book.encode("windows-1252", invalid: :replace, undef: :replace))
-  #   pdf.render_file(title('') + '.pdf')
-  # end
-
   def to_txt
     filename = title(1, false) + '.txt'
     unless File.exist?(filename)
@@ -127,38 +120,6 @@ class Loveread
     end
     filename
   end
-
-  # def to_epub
-  #   all_info = self.all_info
-  #   title = title(1, false)
-  #   filename = "#{title}.html"
-  #   unless File.exist?(filename)
-  #     File.open(filename, "w") do |file|
-  #       file.write(prettify(html_book))
-  #     end
-  #   end
-  #
-  #   epub = EeePub.make do
-  #     title       all_info[:title]
-  #     creator     @author
-  #     publisher   "http://loveread.ec/view_global.php?id=#{@book_id}"
-  #     date        all_info[:date]
-  #     identifier  "http://loveread.ec/view_global.php?id=#{@book_id}", scheme: 'URL'
-  #     uid         "http://loveread.ec/view_global.php?id=#{@book_id}"
-  #
-  #     files [filename] # or files [{'/path/to/foo.html' => 'dest/dir'}, {'/path/to/bar.html' => 'dest/dir'}]
-  #     nav [label: all_info[:title], content: filename]
-  #     # nav [
-  #     #       {:label => '1. foo', :content => 'foo.html', :nav => [
-  #     #         {:label => '1.1 foo-1', :content => 'foo.html#foo-1'}
-  #     #       ]},
-  #     #       {:label => '1. bar', :content => 'bar.html'}
-  #     #     ]
-  #   end
-  #   epub_filename = "#{title}.epub"
-  #   epub.save(epub_filename)
-  #   epub_filename
-  # end
 
   protected
 
@@ -293,7 +254,10 @@ class Loveread
   end
 
   def get_series
-    book_info_page.css('a[href^="series-books"]').first.text.strip
+    series = book_info_page.css('a[href^="series-books"]').first
+    if series
+      series.text.strip
+    end
   end
 
   def span_info
