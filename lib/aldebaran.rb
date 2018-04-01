@@ -17,7 +17,7 @@ class Aldebaran
     if best_book
       book_page = Nokogiri::HTML(open('https://aldebaran.ru' + best_book['href']))
     else
-      book_page = doc.search('.b_read').first
+      book_page = doc
     end
 
     links = book_page.search('.b_read a')
