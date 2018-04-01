@@ -14,7 +14,12 @@ class Aldebaran
 
   def links
     best_book = @doc.search('.left_block.search_list a').first
-    book_page = Nokogiri::HTML(open('https://aldebaran.ru' + best_book['href']))
+    if best_book
+      book_page = Nokogiri::HTML(open('https://aldebaran.ru' + best_book['href']))
+    else
+      book_page = doc.search('.b_read').first
+    end
+
     links = book_page.search('.b_read a')
     links.reduce({}) do |new, link|
       new.merge!(link.text => link['href'])
