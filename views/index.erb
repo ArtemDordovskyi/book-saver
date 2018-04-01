@@ -20,7 +20,7 @@
       <div style="display: inline-block; margin-left: 10px; border-left: 1px solid gray;">
         <span>&nbsp;</span>
       </div>
-      <% @links.each do |format, link| %>
+      <% (@links || {}).each do |format, link| %>
         <div style="display: inline-block;">
           <a href="<%= link %>"><%= format %></a>
         </div>
