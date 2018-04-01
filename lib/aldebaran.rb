@@ -5,6 +5,7 @@ require 'json'
 require 'pry'
 
 class Aldebaran
+  DOMAIN = "https://aldebaran.ru"
   SEARCH = "https://aldebaran.ru/pages/biblio_search/?q="
 
   def initialize(book_name)
@@ -15,14 +16,14 @@ class Aldebaran
   def links
     best_book = @doc.search('.left_block.search_list a').first
     if best_book
-      book_page = Nokogiri::HTML(open('https://aldebaran.ru' + best_book['href']))
+      book_page = Nokogiri::HTML(open(DOMAIN + best_book['href']))
     else
       book_page = @doc
     end
 
     links = book_page.search('.b_read a')
     links.reduce({}) do |new, link|
-      new.merge!(link.text => link['href'])
+      new.merge!(link.text => link['href'].match(/^http/) ? link['href'] : DOMAIN + link['href'])
     end
   end
 
