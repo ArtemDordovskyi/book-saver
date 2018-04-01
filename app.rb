@@ -28,8 +28,10 @@ class BookSaver < Sinatra::Base
         @book_id = loveread.book_id
         @author = loveread.author
         @html_page = loveread.html_page(params[:p])
-        aldebaran = Aldebaran.new(@book_name)
-        @links = aldebaran.links
+        if @book_id.is_a?(Integer)
+          aldebaran = Aldebaran.new(@book_name)
+          @links = aldebaran.links
+        end
       rescue => e
         @html_page = 'Что-то пошло не так'
       end
