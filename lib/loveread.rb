@@ -48,6 +48,11 @@ class Loveread
     }.merge(span_info)
   end
 
+  def links
+    aldebaran = Aldebaran.new(title(1, false), nil)
+    aldebaran.links
+  end
+
   def html_page(page = 1)
     begin
       if @book_id.is_a?(Integer)
