@@ -29,7 +29,7 @@ class BookSaver < Sinatra::Base
         @author = loveread.author
         @html_page = loveread.html_page(params[:p])
         if @book_id.is_a?(Integer)
-          aldebaran = Aldebaran.new(@book_name)
+          aldebaran = Aldebaran.new(loveread.title(params[:p], false))
           @links = aldebaran.links
         end
       rescue => e
