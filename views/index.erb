@@ -10,20 +10,22 @@
 <% if @html_page %>
   <h2><%= @title %></h2>
   <% if @book_id.is_a?(Integer) %>
-    <div style="display: inline-block;">
-      <a href="/download?format=txt&book_name=<%= @book_name %>&author=<%= @author %>&book_id=<%= @book_id %>">txt</a>
-    </div>
-    <div style="display: inline-block;">
-      <a href="/download?format=fb2&book_name=<%= @book_name %>&author=<%= @author %>&book_id=<%= @book_id %>">fb2</a>
-    </div>
-    <div style="display: inline-block; margin-left: 10px; border-left: 1px solid gray;">
-      <span>&nbsp;</span>
-    </div>
-    <% @links.each do |format, link| %>
+    <div style="text-align: right;">
       <div style="display: inline-block;">
-        <a href="<%= link %>"><%= format %></a>
+        <a href="/download?format=txt&book_name=<%= @book_name %>&author=<%= @author %>&book_id=<%= @book_id %>">txt</a>
       </div>
-    <% end %>
+      <div style="display: inline-block;">
+        <a href="/download?format=fb2&book_name=<%= @book_name %>&author=<%= @author %>&book_id=<%= @book_id %>">fb2</a>
+      </div>
+      <div style="display: inline-block; margin-left: 10px; border-left: 1px solid gray;">
+        <span>&nbsp;</span>
+      </div>
+      <% @links.each do |format, link| %>
+        <div style="display: inline-block;">
+          <a href="<%= link %>"><%= format %></a>
+        </div>
+      <% end %>
+    </div>
   <% end %>
   <div><%= @html_page %></div>
 <% end %>
