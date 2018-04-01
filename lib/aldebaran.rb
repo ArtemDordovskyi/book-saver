@@ -14,6 +14,7 @@ class Aldebaran
 
   def links
     best_book = @doc.search('.left_block.search_list a').first
+    puts best_book.inspect
     if best_book
       book_page = Nokogiri::HTML(open('https://aldebaran.ru' + best_book['href']))
     else
