@@ -26,15 +26,19 @@ class BookSaver < Sinatra::Base
         loveread = Loveread.new(@book_name, params[:book_id])
         @title = loveread.title(params[:p])
         @book_id = loveread.book_id
-        @author = loveread.author
-        @html_page = loveread.html_page(params[:p])
         if @book_id.is_a?(Integer)
           begin
             aldebaran = Aldebaran.new(loveread.title(params[:p], false))
             @links = aldebaran.links
+            @author = loveread.author
+            @html_page = loveread.html_page(params[:p])
           rescue
             @links = {}
           end
+        # else
+        #   livelib = Livelib.new(@book_name, params[:book_id])
+        #   @title = loveread.title(params[:p])
+        #   @book_id = loveread.book_id
         end
       rescue => e
         @html_page = 'Что-то пошло не так'
